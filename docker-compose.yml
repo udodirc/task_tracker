@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   nginx:
-    container_name: mlm-site-nginx
+    container_name: ${DOCKER_CONTAINER}-site-nginx
     image: nginx:latest
     ports:
       - "${DOCKER_NGINX_PORT}:80"
@@ -18,7 +18,7 @@ services:
       - php
 
   php:
-    container_name: mlm-site-php
+    container_name: ${DOCKER_CONTAINER}-site-php
     build:
       context: ./
       dockerfile: docker/fpm/Dockerfile
@@ -36,7 +36,7 @@ services:
       PHP_IDE_CONFIG: "serverName=${DOCKER_PROJECT_DOMAIN}"
 
   db:
-    container_name: mlm-site-db
+    container_name: ${DOCKER_CONTAINER}-site-db
     image: mysql:latest
     volumes:
       - binar-db-vol:/var/lib/mysql
