@@ -9,11 +9,20 @@ services:
       - "${DOCKER_NGINX_PORT_SSL}:443"
     networks:
       - binar
+    environment:
+        - DOCKER_CONTAINER=tracker
+        - DOCKER_PROJECT_DOMAIN=tasks.local
     volumes:
+      #- ./docker/nginx/templates:/etc/nginx/templates
       - ./docker/nginx:/etc/nginx/conf.d/
       - ./docker/nginx/logs:/var/log/nginx/
       - ./storage:/storage
       - ./public/docs:/public/docs
+#    command: >
+#        sh -c "
+#          envsubst '\$DOCKER_CONTAINER \$DOCKER_PROJECT_DOMAIN' < /etc/nginx/templates/nginx.conf.template > /etc/nginx/conf.d/default.conf &&
+#          nginx -g 'daemon off;'
+#        "
     depends_on:
       - php
 

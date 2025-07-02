@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\TaskEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -16,7 +17,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('description');
 
-            $table->enum('status', ['new', 'in_progress', 'done'])->default('new');
+            $table->tinyInteger('status')->unsigned()->index()->default(TaskEnum::New);
 
             $table->foreignId('assigned_user_id')
                 ->nullable()
