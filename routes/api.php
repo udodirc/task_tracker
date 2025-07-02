@@ -12,6 +12,7 @@ Route::group(['prefix' => 'admin'], function () {
     Route::group([
         'middleware' => 'api'
     ], function ($router) {
+
         Route::post('/login', [AdminAuthController::class, 'login'])->name('auth.login');
         Route::post('logout', [AdminAuthController::class, 'logout'])->name('auth.logout');
         Route::post('refresh', [AdminAuthController::class, 'refresh'])->name('auth.refresh-token');
@@ -26,6 +27,7 @@ Route::group(['prefix' => 'admin'], function () {
         });
 
         Route::apiResource('task', AdminTaskController::class);
+        Route::post('/task/assign', [AdminTaskController::class, 'assign'])->name('tasks.assign');
 
         Route::group(['middleware' => ['permission:view-permissions|create-roles|update-roles|view-roles|delete-roles']], function () {
             Route::post('/roles/assign', [AdminRoleController::class, 'assignRole'])->name('roles.assign-role');

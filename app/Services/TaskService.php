@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Data\Admin\Task\TaskAssignData;
 use App\Data\Admin\Task\TaskCreateData;
 use App\Data\Admin\Task\TaskUpdateData;
 use App\Models\Task;
@@ -25,7 +26,7 @@ class TaskService extends BaseService
         return [
             'title' => $data->title,
             'description' => $data->description,
-            'created_by_user_id' => Auth::user()->id,
+            'created_by_user_id' => Auth::user()->id ?? null,
         ];
     }
 
@@ -36,5 +37,10 @@ class TaskService extends BaseService
             'title' => $data->title,
             'description' => $data->description
         ];
+    }
+
+    public function assign(TaskAssignData $data): bool
+    {
+        return $this->repository->assign($data);
     }
 }
