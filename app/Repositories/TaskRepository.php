@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Data\Admin\Task\TaskAssignData;
 use App\Data\Admin\Task\TaskChangeStatusData;
+use App\Events\TaskStatusUpdated;
 use App\Models\Task;
 use App\Repositories\Contracts\TaskRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
@@ -35,6 +36,8 @@ class TaskRepository extends AbstractRepository implements TaskRepositoryInterfa
     public function changeStatus(Task $task, TaskChangeStatusData $data): bool
     {
         $task->status = $data->status;
+
+        event(new TaskStatusUpdated($task));
 
         return $task->save();
     }
