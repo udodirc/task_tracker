@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Data\Admin\Task\TaskAssignData;
+use App\Data\Admin\Task\TaskChangeStatusData;
 use App\Data\Admin\Task\TaskCreateData;
 use App\Data\Admin\Task\TaskUpdateData;
 use App\Models\Task;
@@ -42,5 +43,10 @@ class TaskService extends BaseService
     public function assign(TaskAssignData $data): bool
     {
         return $this->repository->assign($data);
+    }
+
+    public function changeStatus(Task $task, TaskChangeStatusData $data): bool
+    {
+        return $this->repository->changeStatus($task, $data);
     }
 }

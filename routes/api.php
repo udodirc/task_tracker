@@ -28,6 +28,7 @@ Route::group(['prefix' => 'admin'], function () {
 
         Route::apiResource('task', AdminTaskController::class);
         Route::post('/task/assign', [AdminTaskController::class, 'assign'])->name('tasks.assign');
+        Route::post('/task/{task}/status', [AdminTaskController::class, 'changeStatus'])->name('tasks.change-status');
 
         Route::group(['middleware' => ['permission:view-permissions|create-roles|update-roles|view-roles|delete-roles']], function () {
             Route::post('/roles/assign', [AdminRoleController::class, 'assignRole'])->name('roles.assign-role');

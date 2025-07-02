@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Data\Admin\Task\TaskAssignData;
+use App\Data\Admin\Task\TaskChangeStatusData;
 use App\Data\Admin\Task\TaskCreateData;
 use App\Data\Admin\Task\TaskUpdateData;
 use App\Http\Controllers\BaseController;
@@ -30,5 +31,10 @@ class TaskController extends BaseController
     public function assign(TaskAssignData $data): bool
     {
         return $this->service->assign($data);
+    }
+
+    public function changeStatus(Task $task, TaskChangeStatusData $data): bool
+    {
+        return $this->service->changeStatus($task, $data);
     }
 }
