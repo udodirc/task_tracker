@@ -2,11 +2,12 @@
 
 namespace Tests\Feature;
 
-use App\Data\Admin\Task\TaskAssignData;
+use App\Enums\TaskEnum;
 use App\Models\Task;
 use App\Models\User;
-use App\Services\TaskService;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Event;
+use App\Events\TaskStatusUpdated;
 
 class TaskTest extends BaseTest
 {
@@ -115,8 +116,42 @@ class TaskTest extends BaseTest
             'assigned_user_id' => null,
         ]);
 
-        $response = $this->getJson(route('task.show', $task->id));
+        $response = $this->postJson(route('tasks.assign', $task->id), [
+            'id' => $task->id
+        ]);
 
         $response->assertStatus(200);
+
+        $task->refresh(); // обновляем из БД
+
+        $this->assertEquals($user->id, $task->assigned_user_id, 'Task was not assigned correctly');
+    }
+
+    public function testChangeStatusUpdatesTaskStatus(): void
+    {
+        Event::fake();
+
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $task = Task::factory()->create([
+            'status' => TaskEnum::New->value,
+        ]);
+
+        $status = [
+            'status' => TaskEnum::InProgress->value,
+        ];
+
+        $response = $this->postJson(route('tasks.change-status', $task->id), $status);
+
+        $response->assertStatus(200);
+
+        $task->refresh();
+
+        $this->assertEquals(TaskEnum::InProgress->value, $task->status);
+
+        Event::assertDispatched(TaskStatusUpdated::class, function ($event) use ($task) {
+            return $event->task->is($task);
+        });
     }
 }
