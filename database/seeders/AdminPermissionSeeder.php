@@ -34,11 +34,11 @@ class AdminPermissionSeeder extends Seeder
 
         $adminRole->syncPermissions($permissions);
         $adminUser = User::find(1);
+        $password = Str::random(12);
 
         if ($adminUser) {
             $adminUser->assignRole('admin');
         } else {
-            $password = Str::random(12);
             $adminUser = User::create([
                 'name' => 'Admin User',
                 'email' => 'admin@example.com',

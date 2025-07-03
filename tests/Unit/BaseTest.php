@@ -146,6 +146,7 @@ abstract class BaseTest extends TestCase
     protected function assertListItemsEntity(
         object $model,
         array $items,
+        string $field,
         string $method = 'all',
     ): void {
         $this->repository
@@ -156,13 +157,15 @@ abstract class BaseTest extends TestCase
         $result = $this->service->$method();
 
         $this->assertCount(2, $result);
-        $this->assertEquals($items[0], $result[0]->name);
-        $this->assertEquals($items[1], $result[1]->name);
+        $this->assertEquals($items[0], $result[0]->{$field});
+        $this->assertEquals($items[1], $result[1]->{$field});
     }
 
     protected function assertShowItemEntity(
         string $permission,
         string $route,
+        array $data,
+        bool $user = false,
         bool $role = false,
     ): void {
 
@@ -174,12 +177,8 @@ abstract class BaseTest extends TestCase
                 'id' => $adminRole->id,
                 'name' => RolesEnum::Admin->value,
             ];
-        } else {
-            $data = [
-                'id' => $adminRole->id,
-                'name' => 'Alice',
-                'email' => 'alice@test.test',
-            ];
+        } elseif($user) {
+            $data['id'] = $adminRole->id;
         }
 
         $response->assertOk();
