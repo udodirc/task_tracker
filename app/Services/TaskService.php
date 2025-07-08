@@ -6,6 +6,7 @@ use App\Data\Admin\Task\TaskAssignData;
 use App\Data\Admin\Task\TaskChangeStatusData;
 use App\Data\Admin\Task\TaskCreateData;
 use App\Data\Admin\Task\TaskUpdateData;
+use App\Enums\TaskEnum;
 use App\Models\Task;
 use App\Repositories\Contracts\TaskRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
@@ -28,6 +29,7 @@ class TaskService extends BaseService
             'title' => $data->title,
             'description' => $data->description,
             'created_by_user_id' => Auth::user()->id ?? null,
+            'status' => TaskEnum::New
         ];
     }
 
