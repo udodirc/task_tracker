@@ -4,10 +4,12 @@ namespace App\Repositories;
 
 use App\Data\Admin\Task\TaskAssignData;
 use App\Data\Admin\Task\TaskChangeStatusData;
+use App\Events\TaskCreated;
 use App\Events\TaskStatusUpdated;
 use App\Models\Task;
 use App\Repositories\Contracts\TaskRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -23,6 +25,15 @@ class TaskRepository extends AbstractRepository implements TaskRepositoryInterfa
         return Task::where('created_by_user_id', Auth::id())
             ->orWhere('assigned_user_id', Auth::id())
             ->get();
+    }
+
+    public function create(array $data): Model
+    {
+        $task = Task::create($data);
+
+        event(new TaskCreated($task));
+
+        return $task;
     }
 
     public function assign(TaskAssignData $data): bool

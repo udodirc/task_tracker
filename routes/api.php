@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\MenuController as AdminMenuController;
+use App\Http\Controllers\Admin\TelegramController as AdminTelegramController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Admin\RoleController as AdminRoleController;
@@ -38,3 +39,7 @@ Route::group(['prefix' => 'admin'], function () {
         });
     });
 });
+
+Route::apiResource('task', AdminTaskController::class);
+
+Route::post('/bot/webhook/{token}', [AdminTelegramController::class, 'handle']);
