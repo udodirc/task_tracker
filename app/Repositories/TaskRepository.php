@@ -27,15 +27,6 @@ class TaskRepository extends AbstractRepository implements TaskRepositoryInterfa
             ->get();
     }
 
-    public function create(array $data): Model
-    {
-        $task = Task::create($data);
-
-        event(new TaskCreated($task));
-
-        return $task;
-    }
-
     public function assign(TaskAssignData $data): bool
     {
         $task = Task::find($data->id);
