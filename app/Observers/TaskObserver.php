@@ -3,6 +3,8 @@
 namespace App\Observers;
 
 use App\Events\TaskCreated;
+use App\Jobs\SendTaskCreatedEmailNotificationJob;
+use App\Jobs\SendTaskCreatedTelegramNotificationJob;
 use App\Models\Task;
 
 class TaskObserver
@@ -12,7 +14,8 @@ class TaskObserver
      */
     public function created(Task $task): void
     {
-        event(new TaskCreated($task));
+        SendTaskCreatedTelegramNotificationJob::dispatch($task);
+        SendTaskCreatedEmailNotificationJob::dispatch($task);
     }
 
     /**

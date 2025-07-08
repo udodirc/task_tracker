@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\TaskEnum;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -35,6 +36,10 @@ class Task extends Model
         'title',
         'description',
         'status'
+    ];
+
+    protected $casts = [
+        'status' => TaskEnum::class,
     ];
 
     public function assignedBy(): BelongsTo

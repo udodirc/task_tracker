@@ -4,14 +4,11 @@ namespace App\Repositories;
 
 use App\Data\Admin\Task\TaskAssignData;
 use App\Data\Admin\Task\TaskChangeStatusData;
-use App\Events\TaskCreated;
 use App\Events\TaskStatusUpdated;
 use App\Models\Task;
 use App\Repositories\Contracts\TaskRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class TaskRepository extends AbstractRepository implements TaskRepositoryInterface
 {
