@@ -14,21 +14,31 @@ class TelegramService
         $this->client = $client;
     }
 
-    public function sendMessage(mixed $chatID, mixed $message): mixed
+    public function sendMessage(mixed $message): mixed
     {
-        $url = config('telegram.url').config('telegram.token')."/sendMessage";
+        $url = config('telegram.url') . config('telegram.token') . "/sendMessage";
 
-        $response = $this->client->post($url, [
-            'headers' => [
-                'Content-Type' => 'application/json',
-            ],
-            'json' => [
-                'chat_id' => $chatID,
-                'text' => $message,
-            ],
-            'verify' => false,
-        ]);
+        try {
+            $response = $this->client->post($url, [
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                ],
+                'json' => [
+                    'chat_id' => config('telegram.chat_id'),
+                    'text' => $message,
+                    'parse_mode' => 'HTML', // если нужно
+                ],
+                'verify' => false,
+            ]);
 
-        return json_decode($response->getBody(), true);
+            return json_decode($response->getBody(), true);
+        } catch (\Exception $e) {
+            Log::error("Telegram sendMessage error: ".$e->getMessage());
+
+            return [
+                'ok' => false,
+                'error' => $e->getMessage(),
+            ];
+        }
     }
 }

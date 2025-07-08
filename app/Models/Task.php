@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $created_by_user_id
  * @property string $title
  * @property string $description
- * @property string $status
+ * @property int $status
  * @property-read Carbon|null $created_at
  * @property-read Carbon|null $updated_at
  */

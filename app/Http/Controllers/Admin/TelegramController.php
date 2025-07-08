@@ -21,7 +21,7 @@ class TelegramController extends Controller
         $chatId = data_get($data, 'message.chat.id');
         $message = data_get($data, 'message.text');
 
-        $resonse = $this->telegram->sendMessage($chatId, $message);
+        $resonse = $this->telegram->sendMessage($message);
 
         return response()->json($resonse);
     }

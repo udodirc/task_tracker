@@ -3,20 +3,18 @@
 namespace App\Listeners;
 
 use App\Events\TaskCreated;
-use App\Services\TelegramService2;
+use App\Services\TelegramService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
 class SendTaskCreatedTelegramNotification
 {
-    protected TelegramService2 $telegram;
-
-    protected string $chatId = 'YOUR_TELEGRAM_CHAT_ID_OR_USER_ID';
+    protected TelegramService $telegram;
 
     /**
      * Create the event listener.
      */
-    public function __construct(TelegramService2 $telegram)
+    public function __construct(TelegramService $telegram)
     {
         $this->telegram = $telegram;
     }
@@ -32,8 +30,8 @@ class SendTaskCreatedTelegramNotification
             "Название: {$task->title}\n".
             "Кто создал: {$task->createdBy->name}\n".
             "Назначена: " . ($task->assignedBy ? $task->assignedBy->name : 'Не назначена') . "\n".
-            "Статус: {$task->status}";
+            "Статус: {$task->status->name}";
 
-        $this->telegram->sendMessage($this->chatId, $message);
+        $this->telegram->sendMessage($message);
     }
 }
