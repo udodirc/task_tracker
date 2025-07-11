@@ -2,7 +2,6 @@
 
 namespace App\Observers;
 
-use App\Events\TaskCreated;
 use App\Jobs\SendTaskCreatedEmailNotificationJob;
 use App\Jobs\SendTaskCreatedTelegramNotificationJob;
 use App\Models\Task;
