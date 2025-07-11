@@ -8,7 +8,7 @@ services:
       - "${DOCKER_NGINX_PORT}:80"
       - "${DOCKER_NGINX_PORT_SSL}:443"
     networks:
-      - binar
+      - project
     environment:
         - DOCKER_CONTAINER=tracker
         - DOCKER_PROJECT_DOMAIN=tasks.local
@@ -37,7 +37,7 @@ services:
 #    ports:
 #      - "${DOCKER_PROJECT_IP}:8001:9000"
     networks:
-      - binar
+      - project
     restart: always
     volumes:
       - ./.:/api
@@ -48,7 +48,7 @@ services:
     container_name: ${DOCKER_CONTAINER}-site-db
     image: mysql:latest
     volumes:
-      - binar-db-vol:/var/lib/mysql
+      - project-db-vol:/var/lib/mysql
     environment:
       MYSQL_USER: ${DB_USERNAME}
       MYSQL_PASSWORD: ${DB_PASSWORD}
@@ -61,12 +61,24 @@ services:
     ports:
       - "${DOCKER_PROJECT_IP}:${DOCKER_DB_PORT}:3306"
     networks:
-      - binar
+      - project
     restart: always
 
+  rabbitmq:
+      image: rabbitmq:3-management
+      container_name: ${DOCKER_CONTAINER}-rabbitmq
+      ports:
+          - "5672:5672"    # RabbitMQ
+          - "15672:15672"  # Web UI http://localhost:15672
+      environment:
+          RABBITMQ_DEFAULT_USER: guest
+          RABBITMQ_DEFAULT_PASS: guest
+      networks:
+          - project
+
 networks:
-  binar:
+  project:
     driver: bridge
 
 volumes:
-  binar-db-vol:
+  project-db-vol:

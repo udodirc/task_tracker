@@ -109,4 +109,39 @@ return [
         'table' => 'failed_jobs',
     ],
 
+    'rabbitmq' => [
+        'driver' => 'rabbitmq',
+        'queue' => env('RABBITMQ_QUEUE', 'default'),
+        'connection' => PhpAmqpLib\Connection\AMQPStreamConnection::class,
+
+        'hosts' => [
+            [
+                'host' => env('RABBITMQ_HOST', '127.0.0.1'),
+                'port' => env('RABBITMQ_PORT', 5672),
+                'user' => env('RABBITMQ_USER', 'guest'),
+                'password' => env('RABBITMQ_PASSWORD', 'guest'),
+                'vhost' => env('RABBITMQ_VHOST', '/'),
+            ],
+        ],
+
+        'options' => [
+            'queue' => [
+                'exchange' => env('RABBITMQ_EXCHANGE', 'application-x'),
+                'exchange_type' => 'direct',
+                'prioritize_delayed_messages' => false,
+                'declare_exchange' => true,
+            ],
+        ],
+
+        'ssl_params' => [
+            'ssl_on' => false,
+            'cafile' => null,
+            'local_cert' => null,
+            'local_key' => null,
+            'verify_peer' => true,
+            'passphrase' => null,
+        ],
+    ],
+
+
 ];
